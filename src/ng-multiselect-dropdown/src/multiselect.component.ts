@@ -1,7 +1,7 @@
 import { Component, HostListener, forwardRef, Input, Output, EventEmitter, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
 import { NG_VALUE_ACCESSOR, ControlValueAccessor } from '@angular/forms';
 import { ListItem, IDropdownSettings } from './multiselect.model';
-
+import * as $ from 'jquery';
 export const DROPDOWN_CONTROL_VALUE_ACCESSOR: any = {
   provide: NG_VALUE_ACCESSOR,
   useExisting: forwardRef(() => MultiSelectComponent),
@@ -275,13 +275,25 @@ export class MultiSelectComponent implements ControlValueAccessor {
 
   toggleDropdown(evt) {
     evt.preventDefault();
-    if (this.disabled && this._settings.singleSelection) {
-      return;
-    }
-    this._settings.defaultOpen = !this._settings.defaultOpen;
-    if (!this._settings.defaultOpen) {
-      this.onDropDownClose.emit();
-    }
+    if($('.dropdown-list').hasClass('dropdownShow')){
+      $('.dropdown-list').removeClass('dropdownShow');
+      this._settings.defaultOpen = true
+     } else {
+     if (this.disabled && this._settings.singleSelection) {
+         return;
+     }
+     this._settings.defaultOpen = !this._settings.defaultOpen;
+     }
+     if (!this._settings.defaultOpen) {
+         this.onDropDownClose.emit();
+     }
+    // if (this.disabled && this._settings.singleSelection) {
+    //   return;
+    // }
+    // this._settings.defaultOpen = !this._settings.defaultOpen;
+    // if (!this._settings.defaultOpen) {
+    //   this.onDropDownClose.emit();
+    // }
   }
 
   closeDropdown() {
